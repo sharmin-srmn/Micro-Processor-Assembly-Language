@@ -1,0 +1,74 @@
+INCLUDE "EMU8086.INC"
+.MODEL SMALL
+.STACK 100H
+.DATA
+ 
+MSG1 DW "ENTER FISRT NUMBER = $" 
+MSG2 DW "ENTER SECOND NUMBER = $"
+MSG3 DW "ENTER SECOND NUMBER = $"
+MSG4 DW "THE PRODUCT IS = $"
+
+.CODE    
+
+
+MAIN PROC
+    
+    MOV AX,@DATA
+    MOV DS,AX      ; DATA INITIALIZATION
+    
+    LEA DX,MSG1
+    MOV AH,9       ; FIRST NUMBER MESSAGE
+    INT 21H
+    
+    MOV AH,1  
+    INT 21H        ; TAKING INPUT OF FIRST NUMBER 
+    MOV BL,AL
+    SUB BL,48
+    
+    PRINTN "" 
+    
+    LEA DX,MSG2
+    MOV AH,9       ; SECOND NUMBER MESSAGE
+    INT 21H
+    
+    MOV AH,1
+    INT 21H        ; TAKING INPUT OF SECOND NUMBER
+    SUB AL,48
+        
+    MUL BL
+    MOV BL,AL
+     
+    
+    PRINTN ""
+    
+    LEA DX,MSG3
+    MOV AH,9
+    INT 21H 
+    
+    MOV AH,1
+    INT 21H
+    SUB AL,48
+    
+    MUL BL
+    MOV BL,AL
+    ADD BL,48 
+    
+    PRINTN ""
+    
+    LEA DX,MSG4
+    MOV AH,9
+    INT 21H
+    
+    MOV AH,2
+    MOV DL,BL
+    INT 21H
+    
+    
+    
+    
+    
+    
+    MOV AH,4CH
+    INT 21H
+    MAIN ENDP
+END MAIN
