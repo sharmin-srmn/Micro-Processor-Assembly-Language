@@ -1,62 +1,51 @@
-;RIGHT ANGLE LEFT SIDED WITHOUT SPACE USING CX
+;LEFT SIDED RIGHT ANGLE WITHOUT SPACE USING CX 
 INCLUDE "EMU8086.INC"
 .MODEL SMALL
 .STACK 100H
-.DATA  
+.DATA 
 
-MSG1 DW "ENTER between ( 1 -9)=  $"
-MSG2 DW "YOU HAVE ENTERED = $" 
-MSG3 DW "YOU HAVE INVALID INPUT $" 
-VAR DB ?
-
-
-.CODE   
+NUM1 DB ?
+.CODE
 MAIN PROC
     MOV AX,@DATA
     MOV DS,AX
     
-    LEA DX,MSG1
-    MOV AH,9
-    INT 21H
-    
     MOV AH,1
     INT 21H
     SUB AL,48
-    
-    MOV VAR,AL
-    
-    PRINTN ""
-    
-    MOV CX,0
-    MOV CL,VAR
-    MOV BL,1
-    
-    TOP:
-    MOV CX,BX
-    
-    LEVEL1:
-    CMP BL,VAR
-    JG EXIT
+    MOV NUM1,AL 
     
     MOV AH,2
-    MOV DL,"*"
+    MOV DL,10
+    INT 21H
+    MOV DL,13
+    INT 21H 
+    
+    MOV CX,0
+    MOV BL,1
+    OUTER_LOOP:
+    
+    MOV CX,BX
+        INNER_LOOP:
+        CMP BL,NUM1
+        JG EXIT
+        
+        MOV AH,2
+        MOV DL, "*"
+        INT 21H
+             
+        LOOP INNER_LOOP
+        INC BL
+        MOV DL,10
+        INT 21H
+        MOV DL,13
+        INT 21H
+    LOOP OUTER_LOOP     
+    
+    
+    EXIT:
+    MOV AH,4CH
     INT 21H
     
-    LOOP LEVEL1
-    INC BL
-    
-    PRINTN ""
-    
-    LOOP TOP
-    
-    
-    
-    
-    EXIT: 
-    
-    
-       
-    MOV AH, 4CH
-    INT 21H
     MAIN ENDP
-END MAIN 
+END MAIN
