@@ -1,56 +1,52 @@
-;LEFT UPSIDE DOWN RIGHT TRIANGLE WITHOUT SPACE USING CX
+;LEFT SIDED UPSIDE DOWN RIGHT ANGLE WITHOUT SPACE USING CX
 INCLUDE "EMU8086.INC"
 .MODEL SMALL
 .STACK 100H
-.DATA  
+.DATA 
 
-MSG1 DW "ENTER between ( 1 -9)=  $"
-MSG2 DW "YOU HAVE ENTERED = $" 
-MSG3 DW "YOU HAVE INVALID INPUT $" 
-VAR DB ?
-
-.CODE   
+NUM1 DB ?
+.CODE
 MAIN PROC
     MOV AX,@DATA
     MOV DS,AX
     
-    LEA DX,MSG1
-    MOV AH,9
-    INT 21H
-    
     MOV AH,1
     INT 21H
-    SUB AL,48
-    
-    MOV VAR,AL
-    
-    PRINTN ""
-    
-    MOV CX,0
-    MOV CL,VAR
-    MOV BL,VAR
-    
-    TOP:
-    MOV CX,BX
-    
-    LEVEL1:
-    CMP BL,0
-    JE EXIT
+    SUB AL,48     ; TAKING INPUT FOR ITERATE LOOP  = 5
+    MOV NUM1,AL 
     
     MOV AH,2
-    MOV DL,"*"
-    INT 21H
+    MOV DL,10
+    INT 21H       ; NEW LINE
+    MOV DL,13
+    INT 21H 
     
-    LOOP LEVEL1
-    DEC BL
+    MOV CX,0
+    MOV BL,NUM1   ; BL = 5
+    OUTER_LOOP:
     
-    PRINTN ""
+    MOV CX,BX     ; CX = 5
+        INNER_LOOP:
+        CMP BL,0
+        JE EXIT
+        
+        MOV AH,2
+        MOV DL, "*"
+        INT 21H
+             
+        LOOP INNER_LOOP
+        DEC BL
+        
+        MOV DL,10
+        INT 21H
+        MOV DL,13
+        INT 21H
+    LOOP OUTER_LOOP     
     
-    LOOP TOP   
     
     EXIT:
-
-    MOV AH, 4CH
+    MOV AH,4CH
     INT 21H
+    
     MAIN ENDP
-END MAIN 
+END MAIN
