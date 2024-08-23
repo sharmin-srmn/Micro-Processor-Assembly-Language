@@ -1,3 +1,4 @@
+;LEFT SIDED UPSIDE DOWN RIGHT ANGLE USING OUTER STAR_PRINT
 .MODEL SMALL
 .STACK 100H
 .DATA
@@ -8,8 +9,7 @@ STAR DB ?
 .CODE
 MAIN PROC
     MOV AX,@DATA
-    MOV DS,AX
-    
+    MOV DS,AX    
    
     LEA DX,MSG1
     MOV AH,9
@@ -42,8 +42,7 @@ MAIN PROC
     MOV DL," "
     INT 21H
     LOOP STAR_PRINT  
-    DEC STAR
-    
+    DEC STAR    
    
     MOV DL,10
     INT 21H
@@ -61,9 +60,7 @@ MAIN PROC
     
     LEA DX, MSG2
     MOV AH,9
-    INT 21H
-    
-    
+    INT 21H   
      
     EXIT:
     MOV AH,4CH
