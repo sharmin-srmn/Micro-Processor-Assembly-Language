@@ -9,7 +9,6 @@ MSG2 DW "YOU HAVE ENTERED = $"
 MSG3 DW "YOU HAVE INVALID INPUT $" 
 VAR DB ?
 
-
 .CODE   
 MAIN PROC
     MOV AX,@DATA
@@ -47,15 +46,10 @@ MAIN PROC
     
     PRINTN ""
     
-    LOOP TOP
+    LOOP TOP   
     
-    
-    
-    
-    EXIT: 
-    
-    
-       
+    EXIT:
+
     MOV AH, 4CH
     INT 21H
     MAIN ENDP
