@@ -6,6 +6,7 @@ MSG1 DB 10,13,"ENTER FIRST NUMBER = $"
 MSG2 DB 10,13,"ENTER SECOND NUMBER = $"
 MSG3 DB 10,13,"WHAT DO YOU WANT TO DO? CHOOSE ONE (+, -, *, /, %) = $" 
 MSG4 DB 10,13,"THE RESULT IS = $"
+MSG5 DB 10,13,"INVALID INPUT. ENTER WITHIN (1- 9)$"
 
 STAR DB 10
 .CODE
@@ -23,6 +24,9 @@ MAIN PROC
     SUB AL,48
     MOV BH,AL
     
+    
+    
+    
     LEA DX, MSG2   ; SECOND INPUT MESSAGE
     MOV AH,9
     INT 21H
@@ -31,9 +35,20 @@ MAIN PROC
     INT 21H        ; TAKING INPUT AND MOVING TO BL
     SUB AL,48
     MOV BL,AL
+       
     
+    CMP BL,0       ; CHECKING VALID NUMBER 
+    JGE NUMBER
     
+    NUMBER:     
+    CMP BL,9
+    JLE CALCULATION
     
+    JMP INVALID
+    
+     
+    
+    CALCULATION:
     LEA DX, MSG3   ; OPERATION MESSAGE
     MOV AH,9
     INT 21H
@@ -124,6 +139,14 @@ MAIN PROC
     MOV DL,BL
     INT 21H
     JE EXIT
+    
+    
+    INVALID:
+    LEA DX, MSG5   ; RESULT MESSAGE
+    MOV AH,9
+    INT 21H  
+    JMP EXIT
+    
     
     LOOP OUTER  
     
