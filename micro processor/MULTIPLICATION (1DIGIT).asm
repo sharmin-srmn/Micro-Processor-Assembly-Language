@@ -63,14 +63,12 @@ MAIN PROC
     MOV DL,BH
     INT 21H
     
-    
     MOV AH,2
     ADD BL,48   
     MOV DL,BL
-    INT 21H   
+    INT 21H 
     
-    
-    
+    EXIT:    
     MOV AH,4CH
     INT 21H
     MAIN ENDP
