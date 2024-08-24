@@ -8,13 +8,14 @@ MSG3 DB 10,13,"WHAT DO YOU WANT TO DO? CHOOSE ONE (+, -, *, /, %) = $"
 MSG4 DB 10,13,"THE RESULT IS = $"
 MSG5 DB 10,13,"INVALID INPUT. ENTER WITHIN (1- 9)$"
 
-STAR DB 10
+TEMP DB ? 
 .CODE
 MAIN PROC 
     MOV AX,@DATA
     MOV DS,AX  
     
-    OUTER:    
+    OUTER:  
+    FIRST_INPUT:  
     LEA DX, MSG1
     MOV AH,9       ; FIRST INPUT MESSAGE
     INT 21H
@@ -23,10 +24,18 @@ MAIN PROC
     INT 21H        ; TAKING INPUT AND MOVING TO BH
     SUB AL,48
     MOV BH,AL
+        
+    IS_EQUAL_MORE1:
+    CMP BH,0            ; CHECKING VALID NUMBER 
+    JGE IS_EQUAL_LESS1
     
+    IS_EQUAL_LESS1:     
+    CMP BH,9        
+    JG INVALID
     
+    JMP SECOND_INPUT   
     
-    
+    SECOND_INPUT:
     LEA DX, MSG2   ; SECOND INPUT MESSAGE
     MOV AH,9
     INT 21H
@@ -34,19 +43,17 @@ MAIN PROC
     MOV AH,1
     INT 21H        ; TAKING INPUT AND MOVING TO BL
     SUB AL,48
-    MOV BL,AL
-       
+    MOV BL,AL  
     
+    IS_EQUAL_MORE2:
     CMP BL,0       ; CHECKING VALID NUMBER 
-    JGE NUMBER
+    JGE IS_EQUAL_LESS2
     
-    NUMBER:     
-    CMP BL,9
-    JLE CALCULATION
-    
-    JMP INVALID
-    
-     
+    IS_EQUAL_LESS2:     
+    CMP BH,9
+    JLE CALCULATION    
+        
+    JMP INVALID     
     
     CALCULATION:
     LEA DX, MSG3   ; OPERATION MESSAGE
@@ -69,8 +76,7 @@ MAIN PROC
     JE DIVISION 
     
     CMP AL, "%"
-    JE MODULUS 
-    
+    JE MODULUS    
     
     ADDITION:
     ADD BL,BH 
@@ -138,24 +144,15 @@ MAIN PROC
     INT 21H
     MOV DL,BL
     INT 21H
-    JE EXIT
-    
+    JMP FIRST_INPUT
     
     INVALID:
     LEA DX, MSG5   ; RESULT MESSAGE
     MOV AH,9
     INT 21H  
-    JMP EXIT
+    JMP EXIT    
     
-    
-    LOOP OUTER  
-    
-         
-    
-    
-    
-    
-    
+    LOOP OUTER 
     
     EXIT:
     MOV AH,4CH
