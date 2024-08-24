@@ -19,10 +19,8 @@ MAIN PROC
     CMP BL, '*'
     JE EXIT
     
-    JMP LEVEL  
-    
-    
-    
+    JMP LEVEL
+
     EXIT:   
     MOV AH, 4CH
     INT 21H
