@@ -12,7 +12,6 @@ VAR2 DB ?
 
 .CODE    
 
-
 MAIN PROC
     
     MOV AX,@DATA
@@ -131,13 +130,8 @@ MAIN PROC
     ADD VAR2,48   
     MOV DL,VAR2
     INT 21H
-        
-   
 
-    
-    
-    
-    
+EXIT:    
     MOV AH,4CH
     INT 21H
     MAIN ENDP
