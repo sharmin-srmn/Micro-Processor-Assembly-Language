@@ -5,14 +5,12 @@ INCLUDE "EMU8086.INC"
  
 MSG1 DW "ENTER FISRT NUMBER = $" 
 MSG2 DW "ENTER SECOND NUMBER = $"
-MSG3 DW "THE QUOTIENT IS = $" 
+MSG3 DW "THE QUOTIENT IS = $"
+MSG4 DW "AND THE REMAINDER IS = $" 
 
 VAR1 DB ?
- 
 
-.CODE    
-
-
+.CODE   
 MAIN PROC
     
     MOV AX,@DATA
@@ -35,7 +33,7 @@ MAIN PROC
     INT 21H 
     
     LEA DX,MSG2
-    MOV AH,9            ; SECOND NUMBER MESSAGE
+    MOV AH,9             ; SECOND NUMBER MESSAGE
     INT 21H
     
     MOV AH,1
@@ -44,34 +42,44 @@ MAIN PROC
     
     MOV BL,AL
     MOV AX,0
-    MOV AL,VAR1   
+    MOV AL,VAR1        
+    
+       
     DIV BL
-    MOV AH,0    
+       
     MOV BX,AX
    
     MOV AH,2
-    MOV DL,10
+    MOV DL,10            ; NEW LINE
     INT 21H
     MOV DL,13
     INT 21H 
     
     LEA DX,MSG3
-    MOV AH,9       ; OUTPUT  MESSAGE
+    MOV AH,9             ; OUTPUT  MESSAGE FOR QUOTIENT
+    INT 21H     
+    
+    MOV AH,2
+    ADD BL,48   
+    MOV DL,BL
     INT 21H
+    
+    MOV AH,2
+    MOV DL,10            ; NEW LINE
+    INT 21H
+    MOV DL,13
+    INT 21H  
+    
+    LEA DX,MSG4
+    MOV AH,9             ; OUTPUT  MESSAGE FOR REMAINDER
+    INT 21H    
     
     MOV AH,2
     ADD BH,48   
     MOV DL,BH
     INT 21H
     
-    
-    MOV AH,2
-    ADD BL,48   
-    MOV DL,BL
-    INT 21H   
-    
-    
-    
+    EXIT:
     MOV AH,4CH
     INT 21H
     MAIN ENDP
