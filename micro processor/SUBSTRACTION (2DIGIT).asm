@@ -1,5 +1,4 @@
 INCLUDE "EMU8086.INC"
-
 .MODEL SMALL
 .STACK 100H
 .DATA
@@ -9,7 +8,6 @@ MSG2 DW "ENTER SECOND NUMBER = $"
 MSG3 DW "THE SUBSTRACTION RESULT IS = $" 
 
 .CODE
-
 MAIN PROC  
     MOV AX,@DATA
     MOV DS,AX 
@@ -40,8 +38,6 @@ MAIN PROC
     MOV DL ,13
     INT 21H
     
-    
-    
     LEA DX, MSG2
     MOV AH,9        ; SECOND NUMBER MEASSAGE
     INT 21H
@@ -71,15 +67,17 @@ MAIN PROC
     CMP BH,CH
     JGE CASE1BHBL ; BH, BL BORO HOLE
     
-    ;CASE2 BH,CL BORO 
-    CASE2CL: 
+    JMP CASE4CHBL ; CH, BL BORO HOLE
     
+    ;CASE2 BH,CL BORO 
+    CASE2CL:
     
     CASE2BH:
     CMP BH,CH
     JGE CASE2BHCL ;BH, CL BORO HOLE
     
-    JMP CASE3CHCL ;CH, CL BORO HOLE
+    JMP CASE3CHCL ;CH, CL BORO HOLE 
+
     CASE1BHBL:
     SUB BL,CL
     ADD BL,48
@@ -88,8 +86,6 @@ MAIN PROC
     ADD BH,48     
     
     JMP RESULT_CASE1_BHBL 
-    
-    
     
     CASE2BHCL:
     ADD BL,10
@@ -100,8 +96,7 @@ MAIN PROC
     SUB BH,CH
     ADD BH, 48
     
-    JMP RESULT_CASE2_BHCL 
-    
+    JMP RESULT_CASE2_BHCL     
     
     CASE3CHCL:
     SUB CL, BL
@@ -111,6 +106,17 @@ MAIN PROC
     ADD CH,48
     
     JMP RESULT_CASE3_CHCL 
+    
+    CASE4CHBL: 
+    ADD CL, 10
+    SUB CL, BL
+    ADD CL, 48
+    
+    ADD BH,1    
+    SUB CH, BH
+    ADD CH,48
+    
+    JMP RESULT_CASE4_CHBL
     
     RESULT_CASE1_BHBL:    
     LEA DX, MSG3
@@ -150,6 +156,20 @@ MAIN PROC
     INT 21H
     JMP OUTER
     
+    RESULT_CASE4_CHBL:    
+    LEA DX, MSG3
+    MOV AH,9        ; OUTPUT MEASSAGE
+    INT 21H
+    
+    MOV AH,2
+    MOV DL, 45
+    INT 21H
+    MOV DL,CH
+    INT 21H
+    MOV DL,CL
+    INT 21H
+    JMP OUTER
+
     EXIT:
     MOV AH,4CH
     INT 21H
