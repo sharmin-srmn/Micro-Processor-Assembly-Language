@@ -8,7 +8,9 @@ MSG3 DB 10,13,"WHAT DO YOU WANT TO DO? CHOOSE ONE (+, -, *, /, %) = $"
 MSG4 DB 10,13,"THE RESULT IS = $"
 MSG5 DB 10,13,"INVALID FIRST INPUT. ENTER WITHIN (1- 9)$" 
 MSG6 DB 10,13,"INVALID SECOND INPUT. ENTER WITHIN (1- 9)$"
-MSG7 DB 10,13,"FIRST INPUT SHOULD BE GREATER.$"
+MSG7 DB 10,13,"FIRST INPUT SHOULD BE GREATER.$" 
+MSG8 DB 10,13,"THE QUOTIENT IN = $"
+MSG9 DB 10,13,"AND THE REMAINDER IS = $"
 
 TEMP DB ? 
 .CODE
@@ -53,13 +55,9 @@ MAIN PROC
     
     IS_EQUAL_LESS2:     
     CMP BL,9
-    JG INVALID_INPUT2   
+    JG INVALID_INPUT2
     
-    
-    
-    JLE CALCULATION    
-        
-        
+    JLE CALCULATION   
     
     CALCULATION:
     LEA DX, MSG3   ; OPERATION MESSAGE
@@ -127,12 +125,12 @@ MAIN PROC
     MOV AX,0
     MOV AL,BH
     DIV BL
-    MOV AH,0 
+     
     MOV BH,AH
     ADD BH,48
     MOV BL,AL
     ADD BL,48    
-    JMP SHOW
+    JMP DIVISION_SHOW
     
     MODULUS:
     MOV AX,0
@@ -158,6 +156,25 @@ MAIN PROC
     INT 21H
     JMP FIRST_INPUT
     
+    DIVISION_SHOW:
+    LEA DX, MSG8                     ; RESULT MESSAGE
+    MOV AH,9
+    INT 21H
+    
+    MOV AH,2
+    MOV DL,BL
+    INT 21H 
+    
+    LEA DX, MSG9                     ; RESULT MESSAGE
+    MOV AH,9
+    INT 21H
+    
+    MOV AH,2
+    MOV DL,BH
+    INT 21H
+    
+    JMP FIRST_INPUT
+    
     INVALID_INPUT1:
     LEA DX, MSG5                     ; FIRST INPUT INVALID MESSAGE
     MOV AH,9
@@ -169,13 +186,12 @@ MAIN PROC
     MOV AH,9
     INT 21H  
     JMP SECOND_INPUT 
-    
-    
+
     INVALID_MESSAGE:
     LEA DX, MSG7                     ; FIRST INPUT SHOULD BE GREATER MESSAGE
     MOV AH,9
     INT 21H  
-    JMP FIRST_INPUT      
+    JMP FIRST_INPUT
     
     LOOP OUTER 
     
