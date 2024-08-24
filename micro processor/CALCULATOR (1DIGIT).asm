@@ -118,10 +118,7 @@ MAIN PROC
     ADD BL,48    
     JMP SHOW 
     
-    DIVISION:
-    CMP BH,BL
-    JL INVALID_MESSAGE
-     
+    DIVISION:         
     MOV AX,0
     MOV AL,BH
     DIV BL
